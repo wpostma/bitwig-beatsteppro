@@ -1,11 +1,15 @@
 loadAPI(1);
 
-host.defineController("Factotumo", "Arturia BSP", "2.0", "9694E601-0A0E-4535-8A7A-2F935A1BB285");
+// knobs: relative1
+//  cc 20,21,22,23,   24,25,26,27, 28,29,30,31,  35,36,37,38
+
+host.defineController("Arturia-Custom", "Arturia BeatStepPro", "2.0", "9694E601-0A0E-4535-8A7A-2F935A1BB285");
 //host.addDeviceNameBasedDiscoveryPair(["Arturia BeatStep Pro","Arturia BeatStep Pro Arturia BeatStepPro"],["Arturia BeatStep Pro","Arturia BeatStep Pro Arturia BeatStepPro"]);
 host.defineMidiPorts(1, 1);
 
 var bsp = {
-  encoderCCs: [10,74,71,76,77,93,73,75,114,18,19,16,17,91,79,72]
+ // encoderCCs: [10,74,71,76,77,93,73,75,114,18,19,16,17,91,79,72]  // old
+  encoderCCs: [20,21,22,23,  24,25,26,27,  28,29,30,31,  35,36,37,38 ]
 };
 
 var bitwig = {
@@ -46,7 +50,8 @@ function init() {
 function onMidi(status, data1, data2) {
    var command = status & 0xf0;
    var channel = (status & 0x0f) + 1;
-   //println("channel=" + channel + ", command=" + command + ", data1=" + data1 + ", data2=" + data2);
+   
+   println("channel=" + channel + ", command=" + command + ", data1=" + data1 + ", data2=" + data2);
 
    if (status == 146) {
       switch (data1) {
@@ -80,14 +85,15 @@ function onMidi(status, data1, data2) {
       }
    }
 
-   if (status == 178) { // expect messages in control mode to come over channel 3
+   if ((command == 176)&&(channel==3)) { // expect messages in control mode to come over channel 3
      var encoderCCIdx = bsp.encoderCCs.indexOf(data1);
 
+      println("encoder " +encoderCCIdx + " ==> " + data2 )
      if (encoderCCIdx != -1) {
          if (encoderCCIdx < 8) {
-             handleEncoderChange(data2, bitwig.cursorDevice.getParameter(encoderCCIdx));
+             handleEncoderChange(data2, bitwig.cursorDevice.getParameter(encoderCCIdx), "parameter "+(encoderCCIdx) );
          } else {
-             handleEncoderChange(data2, bitwig.cursorDevice.getMacro(encoderCCIdx - 8).getAmount());
+             handleEncoderChange(data2, bitwig.cursorDevice.getMacro(encoderCCIdx - 8).getAmount(), "macro "+(encoderCCIdx) );
          }
      } else {
         switch (data1) {
@@ -150,10 +156,12 @@ function doActionOnGateOpen(data2, f) {
   }
 }
 
-function handleEncoderChange(value, paramOrMacro) {
+function handleEncoderChange(value, paramOrMacro, debug) {
     if (value == 64) { return; }
     // -1 for knob turn left, +1 for knob turn right
-    paramOrMacro.inc(value - 64, 128);
+    var diff = value-64;
+    println(debug+" "+diff);
+    paramOrMacro.inc(diff, 128);
 }
 
 function onSysex(sysex) { }

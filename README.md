@@ -4,7 +4,7 @@ The script:
   * creates 3 note inputs: sequencer 1, sequencer 2, and drum
   * uses the default channels of 1, 2, and 10 for each of the Beatstep Pro's sequencers
   * expects control mode to be channel 3, which enables
-    * encoders 1-8 control cursor device parameters
+    * encoders 1-8 to control cursor device parameters
     * encoders 9-16 control cursor device macros
     * steps 1 / 2 are previous track / next track
     * steps 3 / 4 are previous device / next device on selected track
@@ -24,6 +24,9 @@ This script draws inspiration from https://github.com/justlep/bitwig/tree/master
 
 **Installation**
 
-  1. Get a copy of the [latest release zip](https://github.com/benschmaus/bitwig-beatsteppro/releases) or clone this repo.
-  2. If you aren't using other Factotumo controller scripts then unzip release file and copy the Factotumo directory to your Bitwig Controller Scripts directory.  (On Mac this is `~/Documents/Bitwig\ Studio/Controller\ Scripts/`.)  Otherwise see step 3.
-  3. If you're using other Factotumo controller scripts already then copy the BeatstepPro directory to the existing Factotumo directory under the Bitwig Controller Scripts dir.
+  1. Get a copy of the latest release zip or clone this repo direct to Controller Scripts
+  2. If you got the zip unzip to Documents/Bitwig/Controller Scripts.
+
+Based on Factotumo from here:
+https://github.com/benschmaus/bitwig-beatsteppro/release
+
