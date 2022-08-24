@@ -1,4 +1,7 @@
-loadAPI(10); // was 1
+loadAPI(10); 
+
+// BeatStepPro Controller Script for Bitwig 4.x
+
 
 // constants
 // Number of tracks, sends and scenes, they are called from the Launchpad.control.js file only during the init() function
@@ -7,6 +10,7 @@ var NUM_SENDS = 2;
 var NUM_SCENES = 8;
 var NUM_EFFECT_TRACKS = 1;
 var NUM_EFFECT_SCENES = 1;
+var NUM_REMOTE_CONTROLS = 8;
 
 // knobs: relative1
 //  cc 20,21,22,23,   24,25,26,27, 28,29,30,31,  35,36,37,38
@@ -77,10 +81,11 @@ function init() {
     bitwig.cursorDevice.getChannel().getSolo().markInterested(); 
     bitwig.cursorDevice.getChannel().getMute().markInterested(); 
    
-    bitwig.remoteControls = bitwig.cursorDevice.createCursorRemoteControlsPage(8); // replaces device Param/macro.
+    bitwig.remoteControls = bitwig.cursorDevice.createCursorRemoteControlsPage(NUM_REMOTE_CONTROLS); // replaces device Param/macro.
 
-    bitwig.deviceBrowser = bitwig.cursorDevice.createDeviceBrowser(8,8);
-/*
+    bitwig.deviceBrowser = bitwig.cursorDevice.createDeviceBrowser(8,8); // num_of_filter_column, num_of_results_columns
+    
+    /*
     for(var t=0; t<NUM_TRACKS; t++)
     {
        var track = bitwig.trackBank.getChannel(t);
