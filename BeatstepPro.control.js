@@ -46,6 +46,9 @@ function init() {
     // channels 1, 2, and 10 for the BSP's sequencers
     mi.createNoteInput("s1", "?0????").setShouldConsumeEvents(false);
     mi.createNoteInput("s2", "?1????").setShouldConsumeEvents(false);
+    mi.createNoteInput("s3", "?2????").setShouldConsumeEvents(false);
+    mi.createNoteInput("s4", "?3????").setShouldConsumeEvents(false);
+
     mi.createNoteInput("drum", "?9????").setShouldConsumeEvents(false);
 
     bitwig.application =  host.createApplication();
@@ -126,8 +129,9 @@ function onMidi(status, data1, data2) {
    var channel = (status & 0x0f) + 1;
    
    println("channel=" + channel + ", command=" + command + ", data1=" + data1 + ", data2=" + data2);
-
-   if (status == 146) {
+ 
+   /* repurpose midi note velocity inputs on channel 2 as commands.  useful if you want more daw functions like mute/solo arm on some big square drum pads?
+   if (status == 146) and(channel == 2) {
       switch (data1) {
         case 44:
           doActionOnGateOpen(data2, function() {
@@ -158,6 +162,7 @@ function onMidi(status, data1, data2) {
           break;
       }
    }
+   */
 
    if ((command == 176)&&(channel==3)) { // expect messages in control mode to come over channel 3
      var encoderCCIdx = bsp.encoderCCs.indexOf(data1);
